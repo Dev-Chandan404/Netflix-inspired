@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marvel Movies</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Netflix+Sans:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #141414;
+        color: #fff;
+        font-family: "Netflix Sans", "Poppins", sans-serif;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #141414;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 40px;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        animation: slideIn 0.5s ease-out;
+      }
+
+      .header img.logo {
+        height: 40px;
+      }
+
+      .search-bar {
+        display: flex;
+        align-items: center;
+      }
+
+      .search-bar input {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        background-color: #333;
+        color: #fff;
+        font-size: 14px;
+        width: 200px;
+        margin-right: 10px;
+        transition: width 0.3s ease, background-color 0.3s ease;
+      }
+
+      .search-bar input:focus {
+        width: 250px;
+        outline: none;
+        background-color: #444;
+      }
+
+      .search-bar button {
+        background-color: #e50914;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      .search-bar button:hover {
+        background-color: #f40612;
+        transform: scale(1.05);
+      }
+
+      .buttons {
+        text-align: center;
+        margin: 100px 0 30px;
+        animation: fadeIn 1s ease-out;
+      }
+
+      .buttons input[type="button"] {
+        padding: 10px 20px;
+        margin: 5px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 500;
+        color: #fff;
+        background-color: #333;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+      }
+
+      .buttons input[type="button"].active,
+      .buttons input[type="button"]:hover {
+        background-color: #e50914;
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+      }
+
+      .main {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+        padding: 20px 40px;
+        animation: fadeIn 1s ease-out;
+      }
+
+      .card {
+        background-color: #222;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        padding-bottom: 15px;
+        opacity: 0;
+        animation: cardFadeIn 0.5s ease-out forwards;
+        animation-delay: calc(var(--i) * 0.1s);
+      }
+
+      .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+        z-index: 10;
+      }
+
+      .card img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .card-content {
+        padding: 15px;
+        text-align: center;
+      }
+
+      .card h1 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 5px;
+        transition: color 0.3s ease;
+      }
+
+      .card:hover h1 {
+        color: #e50914;
+      }
+
+      .card h3 {
+        font-size: 14px;
+        font-weight: 400;
+        color: #ccc;
+        margin-bottom: 10px;
+      }
+
+      .card video {
+        width: 90%;
+        margin: 0 auto;
+        border-radius: 8px;
+        display: block;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes cardFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          padding: 15px 20px;
+        }
+
+        .header img.logo {
+          height: 30px;
+        }
+
+        .search-bar input {
+          width: 150px;
+        }
+
+        .search-bar input:focus {
+          width: 180px;
+        }
+
+        .main {
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          padding: 20px;
+        }
+
+        .buttons input[type="button"] {
+          padding: 8px 15px;
+          font-size: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .main {
+          grid-template-columns: 1fr;
+        }
+
+        .card img {
+          height: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+        alt="IT TECHMANIA Logo"
+        class="logo"
+      />
+      <div class="search-bar">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search movies..."
+          aria-label="Search movies"
+        />
+        <button onclick="searchMovies()" aria-label="Search">Search</button>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <input type="button" value="Spiderman" onclick="show('Spiderman')" />
+      <input
+        type="button"
+        value="Captain America"
+        onclick="show('Captain America')"
+      />
+      <input type="button" value="Avengers" onclick="show('Avengers')" />
+      <input type="button" value="Others" onclick="show('Others')" />
+      <input type="button" value="All" onclick="show('All')" />
+    </div>
+
+    <div class="main" id="mintu"></div>
+
+    <script>
+      const movielist = [
+        {
+          id: 1,
+          category: "Spiderman",
+          title: "Spider-Man: No Way Home",
+          year: "2021",
+          url: "./images/spiderman1.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 2,
+          category: "Spiderman",
+          title: "Spider-Man: Far From Home",
+          year: "2019",
+          url: "./images/Spiderman2.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 3,
+          category: "Spiderman",
+          title: "The Amazing Spider-Man",
+          year: "2012",
+          url: "./images/spiderman3.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 4,
+          category: "Spiderman",
+          title: "Spider-Man 3",
+          year: "2007",
+          url: "./images/spiderman4.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 5,
+          category: "Spiderman",
+          title: "Spider-Man 2",
+          year: "2004",
+          url: "./images/spiderman5.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 6,
+          category: "Spiderman",
+          title: "Spider-Man",
+          year: "2002",
+          url: "./images/spiderman6.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 7,
+          category: "Captain America",
+          title: "Captain America: Brave New World",
+          year: "2025",
+          url: "./images/captainamerica1.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 8,
+          category: "Others",
+          title: "Captain Marvel",
+          year: "2019",
+          url: "./images/captainamerica2.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 9,
+          category: "Captain America",
+          title: "Captain America: Civil War",
+          year: "2016",
+          url: "./images/captainamerica3.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 10,
+          category: "Captain America",
+          title: "Captain America: The First Avenger",
+          year: "2011",
+          url: "./images/captainamerica4.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 11,
+          category: "Avengers",
+          title: "Avengers: Secret Wars",
+          year: "2027",
+          url: "./images/Avengers1.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 12,
+          category: "Avengers",
+          title: "Avengers: Doomsday",
+          year: "2026",
+          url: "./images/Avengers2.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 13,
+          category: "Avengers",
+          title: "Avengers: Endgame",
+          year: "2019",
+          url: "./images/Avengers3.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 14,
+          category: "Avengers",
+          title: "Avengers: Infinity War",
+          year: "2018",
+          url: "./images/Avengers4.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 15,
+          category: "Avengers",
+          title: "The Avengers",
+          year: "2012",
+          url: "./images/Avengers5.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 16,
+          category: "Avengers",
+          title: "Avengers: Age of Ultron",
+          year: "2015",
+          url: "./images/Avengers6.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 17,
+          category: "Others",
+          title: "Blade",
+          year: "2025",
+          url: "./images/blade.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 18,
+          category: "Others",
+          title: "Doctor Strange",
+          year: "2016",
+          url: "./images/doctorstrange.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 19,
+          category: "Others",
+          title: "Eternals",
+          year: "2021",
+          url: "./images/eternals.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 20,
+          category: "Others",
+          title: "The Fantastic Four: First Steps",
+          year: "2025",
+          url: "./images/thefantastic.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 21,
+          category: "Others",
+          title: "The Marvels",
+          year: "2023",
+          url: "./images/themarvels.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 22,
+          category: "Others",
+          title: "Thunderbolts",
+          year: "2025",
+          url: "./images/thunderbolts.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 23,
+          category: "Others",
+          title: "Venom",
+          year: "2018",
+          url: "./images/venom.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+        {
+          id: 24,
+          category: "Others",
+          title: "X-Men: Apocalypse",
+          year: "2016",
+          url: "./images/x men.jpg",
+          videolink: "./images/marvel1.mp4",
+        },
+      ];
+
+      let selectedCategory = "All";
+      let filteredMovies = movielist;
+
+      function renderMovies(movies) {
+        const main = document.getElementById("mintu");
+        main.innerHTML = "";
+        movies.forEach((item, index) => {
+          main.innerHTML += `
+            <div class="card" style="--i: ${index}">
+              <img src="${item.url}" alt="${item.title}">
+              <div class="card-content">
+                <h1>${item.title}</h1>
+                <h3>Category: ${item.category}</h3>
+                <h3>Year: ${item.year}</h3>
+                <video controls>
+                  <source src="${item.videolink}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      function show(category) {
+        selectedCategory = category;
+        filteredMovies =
+          category === "All"
+            ? movielist
+            : movielist.filter((item) => item.category === category);
+        renderMovies(filteredMovies);
+        updateButtons(category);
+      }
+
+      function searchMovies() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        filteredMovies = movielist.filter((item) =>
+          item.title.toLowerCase().includes(searchTerm)
+        );
+        renderMovies(filteredMovies);
+        updateButtons("All");
+      }
+
+      function updateButtons(activeCategory) {
+        const buttons = document.querySelectorAll(".buttons input");
+        buttons.forEach((btn) => {
+          btn.classList.toggle("active", btn.value === activeCategory);
+        });
+      }
+
+      window.onload = () => {
+        show("All");
+        document.getElementById("searchInput").addEventListener("input", searchMovies);
+      };
+    </script>
+  </body>
+</html>

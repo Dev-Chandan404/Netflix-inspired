@@ -153,6 +153,5 @@ Open for learning, customization, and experimentation.
 
 ──────────────────────────────────────────────
 
-END OF FILE
-
+💡 This project is for learning and front-end development practice.
 ──────────────────────────────────────────────
